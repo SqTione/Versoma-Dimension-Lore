@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"package": "versoma.dimension.lore.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"mixins": [
+		"NetherPortalMixin",
+		"RecipeManagerMixin",
+		"CreakingMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
