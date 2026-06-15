@@ -68,7 +68,7 @@ public class VersomaDimensionLore implements ModInitializer {
 						SleepParalysisState state = SleepParalysisState.get(level);
 						state.clearSleepBlock(player.getUUID());
 						state.clearSleepCreakings(player.getUUID());
-						state.resetDayCounter(player.getUUID());
+						state.resetChance(player.getUUID());
 						ctx.getSource().sendSuccess(() -> Component.literal("Sleep state reset"), false);
 						return 1;
 					}));

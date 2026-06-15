@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.creaking.Creaking;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -25,11 +26,15 @@ public class SleepParalysisHandler {
     public static final String SLEEP_CREAKING_TAG = "sleep_creaking";
     private static final int CREAKING_COUNT = 4;
     private static final double SPAWN_RADIUS = 2.5;
-
     private static final Random random = new Random();
+
+    private static final float BASE_CHANCE = 0.01f;
+    private static final float MIN_CHANCE_STEP = 0.01f;
+    private static final float MAX_CHANCE_STEP = 0.03f;
 
     private record HeartbeatTask(UUID playerUuid, long targetTick, float volume) {}
     private static final List<HeartbeatTask> heartbeatTasks = new ArrayList<>();
+
     private static final Set<UUID> checkedThisSleep = new HashSet<>();
 
     public static void tick(MinecraftServer server) {
@@ -91,11 +96,14 @@ public class SleepParalysisHandler {
 
     private static void tryTriggerParalysis(ServerPlayer player, ServerLevel level,
                                             SleepParalysisState state, long currentTick) {
-        int days = state.getDayCounter(player.getUUID());
-        float chance = 0.05f + days * 0.08f + (random.nextFloat() - 0.5f) * 0.06f;
+        UUID uuid = player.getUUID();
+        float currentChance = state.getChance(uuid, BASE_CHANCE);
 
-        if (random.nextFloat() > chance) {
-            state.incrementDayCounter(player.getUUID());
+        if (random.nextFloat() > currentChance) {
+            float step = MIN_CHANCE_STEP + random.nextFloat() * (MAX_CHANCE_STEP - MIN_CHANCE_STEP);
+            float newChance = Math.clamp(currentChance + step , 0.0f, 1.0f);
+
+            state.setChance(uuid, newChance);
             return;
         }
 
@@ -138,7 +146,7 @@ public class SleepParalysisHandler {
         }
 
         state.setSleepCreakings(playerUuid, spawnedCreakings);
-        state.resetDayCounter(playerUuid);
+        state.resetChance(playerUuid);
 
         int blockDays = 1 + random.nextInt(3);
         state.blockSleep(playerUuid, currentTick, blockDays);
@@ -178,13 +186,13 @@ public class SleepParalysisHandler {
         creaking.setYBodyRot(yaw);
     }
 
-    public static net.minecraft.world.entity.player.Player.BedSleepingProblem checkCanSleep(ServerPlayer player, ServerLevel level) {
+    public static Player.BedSleepingProblem checkCanSleep(ServerPlayer player, ServerLevel level) {
         SleepParalysisState state = SleepParalysisState.get(level);
         long currentTick = level.getGameTime();
 
         if (state.isSleepBlocked(player.getUUID(), currentTick)) {
             player.sendSystemMessage(Component.literal("Я не могу спать. Они снова придут."));
-            return net.minecraft.world.entity.player.Player.BedSleepingProblem.OTHER_PROBLEM;
+            return Player.BedSleepingProblem.OTHER_PROBLEM;
         }
         return null;
     }

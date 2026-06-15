@@ -6,9 +6,9 @@ import net.minecraft.world.entity.EntityDimensions;
 
 public final class WorldBoundary {
 
-    public static final double EFFECTS_START = 3750.0;
-    public static final double DAMAGE_START  = 3900.0;
-    public static final double INSTANT_DEATH = 4250.0;
+    public static final double EFFECTS_START = 3500.0;
+    public static final double DAMAGE_START  = 3750.0;
+    public static final double INSTANT_DEATH = 4000.0;
 
     private WorldBoundary() {}
 

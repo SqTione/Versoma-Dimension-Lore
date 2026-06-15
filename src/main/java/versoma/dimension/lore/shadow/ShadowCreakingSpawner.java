@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class ShadowCreakingSpawner {
 
-    private static final double SPAWN_MIN_DIST = 48.0;
-    private static final double SPAWN_MAX_DIST = 60.0;
+    private static final double SPAWN_MIN_DIST = 32.0;
+    private static final double SPAWN_MAX_DIST = 48.0;
     private static final float SPAWN_CHANCE = 0.02f;
     private static final int CHECK_INTERVAL = 100;
 
