@@ -3,6 +3,7 @@ package versoma.dimension.lore.sleep;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
@@ -11,16 +12,16 @@ import java.util.*;
 
 public class SleepParalysisState extends SavedData {
 
-    private static final Codec<Map<UUID, Integer>> UUID_INT_MAP_CODEC =
-            Codec.unboundedMap(Codec.STRING, Codec.INT)
+    private static final Codec<Map<UUID, Float>> UUID_FLOAT_MAP_CODEC =
+            Codec.unboundedMap(Codec.STRING, Codec.FLOAT)
                     .xmap(
                             map -> {
-                                Map<UUID, Integer> result = new HashMap<>();
+                                Map<UUID, Float> result = new HashMap<>();
                                 map.forEach((k, v) -> result.put(UUID.fromString(k), v));
                                 return result;
                             },
                             map -> {
-                                Map<String, Integer> result = new HashMap<>();
+                                Map<String, Float> result = new HashMap<>();
                                 map.forEach((k, v) -> result.put(k.toString(), v));
                                 return result;
                             }
@@ -63,7 +64,7 @@ public class SleepParalysisState extends SavedData {
 
     public static final Codec<SleepParalysisState> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    UUID_INT_MAP_CODEC.fieldOf("day_counters").forGetter(s -> s.dayCounter),
+                    UUID_FLOAT_MAP_CODEC.fieldOf("paralysis_chance").forGetter(s -> s.paralysisChance),
                     UUID_LONG_MAP_CODEC.fieldOf("blocked_until").forGetter(s -> s.blockedUntilTick),
                     UUID_LIST_MAP_CODEC.fieldOf("sleep_creakings").forGetter(s -> s.sleepCreakings)
             ).apply(instance, SleepParalysisState::new)
@@ -76,41 +77,41 @@ public class SleepParalysisState extends SavedData {
             DataFixTypes.LEVEL
     );
 
-    private final Map<UUID, Integer> dayCounter;
+    private final Map<UUID, Float> paralysisChance;
     private final Map<UUID, Long> blockedUntilTick;
     private final Map<UUID, List<UUID>> sleepCreakings;
 
     public SleepParalysisState() {
-        this.dayCounter = new HashMap<>();
+        this.paralysisChance = new HashMap<>();
         this.blockedUntilTick = new HashMap<>();
         this.sleepCreakings = new HashMap<>();
     }
 
-    private SleepParalysisState(Map<UUID, Integer> dayCounter,
+    private SleepParalysisState(Map<UUID, Float> paralysisChance,
                                 Map<UUID, Long> blockedUntilTick,
                                 Map<UUID, List<UUID>> sleepCreakings) {
-        this.dayCounter = new HashMap<>(dayCounter);
+        this.paralysisChance = new HashMap<>(paralysisChance);
         this.blockedUntilTick = new HashMap<>(blockedUntilTick);
         this.sleepCreakings = new HashMap<>(sleepCreakings);
     }
 
-    public static SleepParalysisState get(net.minecraft.server.level.ServerLevel level) {
+    public static SleepParalysisState get(ServerLevel level) {
         return level.getDataStorage().computeIfAbsent(TYPE);
     }
 
-    // --- Day counter ---
+    // --- Chance logic ---
 
-    public int getDayCounter(UUID player) {
-        return dayCounter.getOrDefault(player, 0);
+    public float getChance(UUID player, float defaultChance) {
+        return paralysisChance.getOrDefault(player, defaultChance);
     }
 
-    public void incrementDayCounter(UUID player) {
-        dayCounter.merge(player, 1, Integer::sum);
+    public void setChance(UUID player, float chance) {
+        paralysisChance.put(player, chance);
         setDirty();
     }
 
-    public void resetDayCounter(UUID player) {
-        dayCounter.remove(player);
+    public void resetChance(UUID player) {
+        paralysisChance.remove(player);
         setDirty();
     }
 
