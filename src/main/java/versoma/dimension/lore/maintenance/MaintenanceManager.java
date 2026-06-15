@@ -16,13 +16,9 @@ import java.util.UUID;
 
 public class MaintenanceManager {
 
-    // private static final long CLEAR_INTERVAL_MS = 30 * 60 * 1000L; // 30 минут
-    // private static final long RESTART_INTERVAL_MS = 12 * 60 * 60 * 1000L; // 12 часов
-    // private static final long WARNING_TIME_MS = 60 * 1000L; // 1 минута
-
-    private static final long CLEAR_INTERVAL_MS = 90 * 1000L; // 30 минут
-    private static final long RESTART_INTERVAL_MS = 30 * 1000L; // 12 часов
-    private static final long WARNING_TIME_MS = 60 * 1000L; // 1 минута
+    private static final long CLEAR_INTERVAL_MS = 30 * 60 * 1000L;
+    private static final long RESTART_INTERVAL_MS = 12 * 60 * 60 * 1000L;
+    private static final long WARNING_TIME_MS = 60 * 1000L;
 
     private static long nextClearTime = System.currentTimeMillis() + CLEAR_INTERVAL_MS;
     private static long nextRestartTime = System.currentTimeMillis() + RESTART_INTERVAL_MS;
