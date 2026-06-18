@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import versoma.dimension.lore.boundary.BoundaryEffectHandler;
 import versoma.dimension.lore.maintenance.MaintenanceManager;
+import versoma.dimension.lore.registry.ModItemsRegistry;
 import versoma.dimension.lore.shadow.ShadowCreakingSpawner;
 import versoma.dimension.lore.shadow.ShadowCreakingTracker;
 import versoma.dimension.lore.sleep.SleepParalysisHandler;
@@ -28,9 +29,14 @@ public class VersomaDimensionLore implements ModInitializer {
 	public void onInitialize() {
 		MaintenanceManager.registerCommands();
 
+		ModItemsRegistry.initialize();
+
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			SleepParalysisHandler.tick(server);
 			MaintenanceManager.tick(server);
+			server.getPlayerList().getPlayers().forEach(BoundaryEffectHandler::tick);
+			ShadowCreakingSpawner.tick(server);
+			ShadowCreakingTracker.tick(server);
+			SleepParalysisHandler.tick(server);
 		});
 
 		EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) -> {
@@ -58,13 +64,6 @@ public class VersomaDimensionLore implements ModInitializer {
 					SleepParalysisHandler.onWakeUp(sp, level, state);
 				}
 			}
-		});
-
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			server.getPlayerList().getPlayers().forEach(BoundaryEffectHandler::tick);
-			ShadowCreakingSpawner.tick(server);
-			ShadowCreakingTracker.tick(server);
-			SleepParalysisHandler.tick(server);
 		});
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
