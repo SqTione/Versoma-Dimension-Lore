@@ -6,7 +6,11 @@ public class ControllerGazeState {
     public static float targetPitch = 0f;
     public static float speedFactor = 0f;
 
+    public static float currentZoom = 0f;
+    public static float targetZoom = 0f;
+
     public static void reset() {
         isControlled = false;
+        targetZoom = 0f;
     }
 }

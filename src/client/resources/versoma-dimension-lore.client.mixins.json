@@ -5,7 +5,8 @@
 	"client": [
 		"LocalPlayerMixin",
 		"MouseHandlerMixin",
-		"GameRendererMixin"
+		"GameRendererMixin",
+		"PlayerFovMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

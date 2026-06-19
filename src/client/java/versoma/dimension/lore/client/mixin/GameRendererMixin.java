@@ -1,5 +1,6 @@
 package versoma.dimension.lore.client.mixin;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -7,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import versoma.dimension.lore.client.controller.ControllerGazeState;
 
 @Mixin(GameRenderer.class)
@@ -19,6 +21,10 @@ public class GameRendererMixin {
         long currentTime = System.nanoTime();
         float deltaTime = (currentTime - lastTime) / 1_000_000_000.0f;
         lastTime = currentTime;
+
+        // Зум интерполируем всегда, чтобы плавно возвращаться в исходное положение
+        float zoomSpeed = 1.0f - (float)Math.exp(-4.0f * deltaTime);
+        ControllerGazeState.currentZoom += (ControllerGazeState.targetZoom - ControllerGazeState.currentZoom) * zoomSpeed;
 
         if (!ControllerGazeState.isControlled) return;
 

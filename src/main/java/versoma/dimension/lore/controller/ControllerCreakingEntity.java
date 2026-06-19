@@ -3,11 +3,15 @@ package versoma.dimension.lore.controller;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 public class ControllerCreakingEntity extends Monster {
 
@@ -48,8 +52,17 @@ public class ControllerCreakingEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide()) {
-            tickPhase();
+
+        if (!this.level().isClientSide()) {
+
+            this.tickPhase();
+
+            if (this.tickCount % 10 == 0) {
+                AABB aabb = this.getBoundingBox().inflate(24.0);
+                for (Player player : this.level().getEntitiesOfClass(Player.class, aabb)) {
+                    player.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 20, 4, false, false, true));
+                }
+            }
         }
     }
 

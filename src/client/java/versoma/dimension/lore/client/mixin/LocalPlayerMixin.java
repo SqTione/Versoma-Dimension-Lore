@@ -14,7 +14,7 @@ import java.util.List;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin {
-    private final double MAX_DISTANCE = 64.0;
+    private final double MAX_DISTANCE = 24.0;
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void calculateGazeTarget(CallbackInfo ci) {
@@ -46,6 +46,7 @@ public abstract class LocalPlayerMixin {
         ControllerGazeState.targetYaw = (float)(Math.toDegrees(Math.atan2(toController.z, toController.x))) - 90f;
         ControllerGazeState.targetPitch = (float)(-Math.toDegrees(Math.atan2(toController.y, horizontalDist)));
         ControllerGazeState.speedFactor = closest.getPhase() == 1 ? 5.0f : 15.0f;
+        ControllerGazeState.targetZoom = closest.getPhase() == 1 ? 0.4f : 0.8f;
         ControllerGazeState.isControlled = true;
     }
 }
