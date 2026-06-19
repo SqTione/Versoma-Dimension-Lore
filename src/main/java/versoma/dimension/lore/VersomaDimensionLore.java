@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import versoma.dimension.lore.boundary.BoundaryEffectHandler;
+import versoma.dimension.lore.controller.ModEntityTypes;
 import versoma.dimension.lore.maintenance.MaintenanceManager;
 import versoma.dimension.lore.shadow.ShadowCreakingSpawner;
 import versoma.dimension.lore.shadow.ShadowCreakingTracker;
@@ -27,6 +28,7 @@ public class VersomaDimensionLore implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		MaintenanceManager.registerCommands();
+		ModEntityTypes.register();
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			SleepParalysisHandler.tick(server);
