@@ -11,9 +11,8 @@ import versoma.dimension.lore.client.controller.ControllerGazeState;
 public class MouseHandlerMixin {
 
     @Inject(method = "turnPlayer", at = @At("HEAD"), cancellable = true)
-    private void blockMouseLook(CallbackInfo ci) {
+    private void blockMouse(CallbackInfo ci) {
         if (ControllerGazeState.isControlled) {
-            ControllerGazeState.isControlled = false; // сбрасываем каждый тик
             ci.cancel();
         }
     }
