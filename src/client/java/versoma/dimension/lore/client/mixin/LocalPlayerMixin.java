@@ -14,7 +14,7 @@ import java.util.List;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin {
-    public final double MAX_DISTANCE = 64.0;
+    private final double MAX_DISTANCE = 64.0;
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void calculateGazeTarget(CallbackInfo ci) {
@@ -23,7 +23,7 @@ public abstract class LocalPlayerMixin {
 
         List<ControllerCreakingEntity> controllers = self.level().getEntitiesOfClass(ControllerCreakingEntity.class, searchBox);
         ControllerCreakingEntity closest = null;
-        double maxDistSqr = MAX_DISTANCE * MAX_DISTANCE;
+        double maxDistSqr = this.MAX_DISTANCE * this.MAX_DISTANCE;
 
         for (ControllerCreakingEntity c : controllers) {
             int phase = c.getPhase();
