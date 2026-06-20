@@ -1,4 +1,4 @@
-package versoma.dimension.lore.controller;
+package versoma.dimension.lore.registry;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,13 +14,13 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.TypedEntityData;
+import versoma.dimension.lore.controller.ControllerCreakingEntity;
 
-public class ModEntityTypes {
+public class ModEntityRegistry {
     public static final EntityType<ControllerCreakingEntity> CONTROLLER_CREAKING = register(
             "controller_creaking",
             EntityType.Builder.<ControllerCreakingEntity>of(ControllerCreakingEntity::new, MobCategory.MONSTER)
                     .sized(0.9f, 1.8f)
-                    .noSummon() // пока без яйца призыва в обычном виде
     );
 
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
@@ -36,6 +36,8 @@ public class ModEntityTypes {
                 CONTROLLER_CREAKING,
                 ControllerCreakingEntity.createAttributes()
         );
+
+        ControllerCreakingEntity.registerSpawns(CONTROLLER_CREAKING);
 
         ResourceKey<Item> eggKey = ResourceKey.create(
                 Registries.ITEM,

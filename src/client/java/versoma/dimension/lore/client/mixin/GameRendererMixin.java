@@ -20,11 +20,11 @@ public class GameRendererMixin {
     private void applyGazePerFrame(net.minecraft.client.DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
         long currentTime = System.nanoTime();
         float deltaTime = (currentTime - lastTime) / 1_000_000_000.0f;
+
         lastTime = currentTime;
 
-        // Зум интерполируем всегда, чтобы плавно возвращаться в исходное положение
         float zoomSpeed = 1.0f - (float)Math.exp(-4.0f * deltaTime);
-        ControllerGazeState.currentZoom += (ControllerGazeState.targetZoom - ControllerGazeState.currentZoom) * zoomSpeed;
+        ControllerGazeState.currentFovMod += (ControllerGazeState.targetFovMod - ControllerGazeState.currentFovMod) * zoomSpeed;
 
         if (!ControllerGazeState.isControlled) return;
 

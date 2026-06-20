@@ -45,8 +45,17 @@ public abstract class LocalPlayerMixin {
 
         ControllerGazeState.targetYaw = (float)(Math.toDegrees(Math.atan2(toController.z, toController.x))) - 90f;
         ControllerGazeState.targetPitch = (float)(-Math.toDegrees(Math.atan2(toController.y, horizontalDist)));
-        ControllerGazeState.speedFactor = closest.getPhase() == 1 ? 5.0f : 15.0f;
-        ControllerGazeState.targetZoom = closest.getPhase() == 1 ? 0.4f : 0.8f;
+
+        int phase = closest.getPhase();
+        ControllerGazeState.speedFactor = phase == 1 ? 5.0f : 15.0f;
+
+        float virtualDistance = 2.5f;
+        double actualDistance = Math.sqrt(self.distanceToSqr(closest));
+
+        ControllerGazeState.targetFovMod = (phase == 1 || phase == 2)
+                ? (float) (virtualDistance / Math.max(actualDistance, virtualDistance))
+                : 1.0f;
+
         ControllerGazeState.isControlled = true;
     }
 }

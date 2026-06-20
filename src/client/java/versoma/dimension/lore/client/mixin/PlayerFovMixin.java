@@ -12,9 +12,9 @@ public class PlayerFovMixin {
 
     @Inject(method = "getFieldOfViewModifier", at = @At("RETURN"), cancellable = true)
     private void applyGazeZoom(CallbackInfoReturnable<Float> cir) {
-        if (ControllerGazeState.currentZoom > 0.001f) {
+        if (ControllerGazeState.currentFovMod < 0.99f) {
             float original = cir.getReturnValue();
-            cir.setReturnValue(original * (1.0f - (ControllerGazeState.currentZoom * 0.5f)));
+            cir.setReturnValue(original * ControllerGazeState.currentFovMod);
         }
     }
 }
