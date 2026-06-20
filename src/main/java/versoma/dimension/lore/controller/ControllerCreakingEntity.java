@@ -2,12 +2,14 @@ package versoma.dimension.lore.controller;
 
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -18,9 +20,11 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import versoma.dimension.lore.registry.ModSoundsRegistry;
 
 import java.util.EnumSet;
 
@@ -104,7 +108,7 @@ public class ControllerCreakingEntity extends Monster {
                 type,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules
+                ControllerCreakingEntity::checkMonsterSpawnRules
         );
 
         ResourceKey<Biome> paleGardenKey = ResourceKey.create(
@@ -122,6 +126,21 @@ public class ControllerCreakingEntity extends Monster {
         );
     }
 
+    public static boolean checkControllerSpawnRules(EntityType<ControllerCreakingEntity> type,
+                                                    ServerLevelAccessor level,
+                                                    EntitySpawnReason spawnReason,
+                                                    BlockPos pos,
+                                                    RandomSource random) {
+
+        boolean isCallActive = level.getLevel().getGameRules().get(versoma.dimension.lore.registry.ModGameRulesRegistry.PALE_GARDEN_CALL_ACTIVE);
+
+        if (!isCallActive) {
+            return false;
+        }
+
+        return Monster.checkMonsterSpawnRules(type, level, spawnReason, pos, random);
+    }
+
     private void tickPhase() {
         int phase = getPhase();
         phaseTimer++;
@@ -129,7 +148,7 @@ public class ControllerCreakingEntity extends Monster {
         switch (phase) {
             case 1 -> {
                 if (phaseTimer == 1) {
-                    this.playSound(versoma.dimension.lore.registry.ModSoundsRegistry.CONTROLLER_GAZE, 3.0f, 1.0f);
+                    this.playSound(ModSoundsRegistry.CONTROLLER_GAZE, 3.0f, 1.0f);
                 }
                 if (phaseTimer >= PULL_DURATION) setPhase(2);
             }
