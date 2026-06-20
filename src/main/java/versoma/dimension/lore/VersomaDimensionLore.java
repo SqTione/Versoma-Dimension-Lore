@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import versoma.dimension.lore.boundary.BoundaryEffectHandler;
 import versoma.dimension.lore.maintenance.MaintenanceManager;
 import versoma.dimension.lore.registry.ModEntityRegistry;
+import versoma.dimension.lore.registry.ModSoundsRegistry;
 import versoma.dimension.lore.shadow.ShadowCreakingSpawner;
 import versoma.dimension.lore.shadow.ShadowCreakingTracker;
 import versoma.dimension.lore.sleep.SleepParalysisHandler;
@@ -26,6 +27,7 @@ public class VersomaDimensionLore implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		MaintenanceManager.registerCommands();
+		ModSoundsRegistry.register();
 		ModEntityRegistry.register();
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {

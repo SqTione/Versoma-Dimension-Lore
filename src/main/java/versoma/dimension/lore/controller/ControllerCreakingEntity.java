@@ -29,8 +29,8 @@ public class ControllerCreakingEntity extends Monster {
     public static final EntityDataAccessor<Integer> PHASE =
             SynchedEntityData.defineId(ControllerCreakingEntity.class, EntityDataSerializers.INT);
 
-    private static final int PULL_DURATION    = 80;
-    private static final int HOLD_DURATION    = 120;
+    private static final int PULL_DURATION = 70;
+    private static final int HOLD_DURATION = 130;
     private static final int RELEASE_DURATION = 20;
 
     private static final int SLOWNESS_AMPLIFIER = 4;
@@ -66,9 +66,9 @@ public class ControllerCreakingEntity extends Monster {
         return entityData.get(PHASE);
     }
 
-    public void setPhase(int phase) {
-        entityData.set(PHASE, phase);
-        phaseTimer = 0;
+    private void setPhase(int phase) {
+        this.entityData.set(PHASE, phase);
+        this.phaseTimer = 0;
     }
 
     @Override
@@ -127,10 +127,47 @@ public class ControllerCreakingEntity extends Monster {
         phaseTimer++;
 
         switch (phase) {
-            case 1 -> { if (phaseTimer >= PULL_DURATION)    setPhase(2); }
-            case 2 -> { if (phaseTimer >= HOLD_DURATION)    setPhase(3); }
-            case 3 -> { if (phaseTimer >= RELEASE_DURATION) discard();   }
+            case 1 -> {
+                if (phaseTimer == 1) {
+                    this.playSound(versoma.dimension.lore.registry.ModSoundsRegistry.CONTROLLER_GAZE, 3.0f, 1.0f);
+                }
+                if (phaseTimer >= PULL_DURATION) setPhase(2);
+            }
+            case 2 -> {
+                if (phaseTimer >= HOLD_DURATION) {
+                    this.setInvisible(true);
+                    this.setInvulnerable(true);
+
+                    if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                        net.minecraft.world.phys.Vec3 pos = this.position();
+                        serverLevel.sendParticles(
+                                net.minecraft.core.particles.ParticleTypes.POOF,
+                                pos.x, pos.y + 1.0, pos.z,
+                                12, 0.3, 0.5, 0.3, 0.05
+                        );
+                    }
+
+                    setPhase(3);
+                }
+            }
+            case 3 -> {
+                if (phaseTimer >= RELEASE_DURATION) {
+                    this.discard();
+                }
+            }
         }
+    }
+
+    private void despawnWithParticles() {
+        if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            net.minecraft.world.phys.Vec3 pos = this.position();
+            serverLevel.sendParticles(
+                    net.minecraft.core.particles.ParticleTypes.POOF,
+                    pos.x, pos.y + 1.0, pos.z,
+                    12, 0.3, 0.5, 0.3, 0.05
+            );
+        }
+        this.discard();
     }
 
     private static class ApproachAndControlGoal extends Goal {
