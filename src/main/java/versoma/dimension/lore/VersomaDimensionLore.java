@@ -11,13 +11,17 @@ import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import versoma.dimension.lore.boundary.BoundaryEffectHandler;
+import versoma.dimension.lore.command.PaleGardenCommand;
 import versoma.dimension.lore.maintenance.MaintenanceManager;
+import versoma.dimension.lore.registry.ModBlocksRegistry;
+import versoma.dimension.lore.registry.ModItemsRegistry;
+import versoma.dimension.lore.registry.ModEntityRegistry;
+import versoma.dimension.lore.registry.ModGameRulesRegistry;
+import versoma.dimension.lore.registry.ModSoundsRegistry;
 import versoma.dimension.lore.shadow.ShadowCreakingSpawner;
 import versoma.dimension.lore.shadow.ShadowCreakingTracker;
 import versoma.dimension.lore.sleep.SleepParalysisHandler;
 import versoma.dimension.lore.sleep.SleepParalysisState;
-
-import java.util.Optional;
 
 public class VersomaDimensionLore implements ModInitializer {
 
@@ -27,8 +31,22 @@ public class VersomaDimensionLore implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		MaintenanceManager.registerCommands();
+		ModGameRulesRegistry.register();
+		ModSoundsRegistry.register();
+		ModEntityRegistry.register();
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+			PaleGardenCommand.register(dispatcher);
+		});
+
+		ModItemsRegistry.initialize();
+		ModBlocksRegistry.initialize();
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			MaintenanceManager.tick(server);
+			server.getPlayerList().getPlayers().forEach(BoundaryEffectHandler::tick);
+			ShadowCreakingSpawner.tick(server);
+			ShadowCreakingTracker.tick(server);
 			SleepParalysisHandler.tick(server);
 			MaintenanceManager.tick(server);
 		});

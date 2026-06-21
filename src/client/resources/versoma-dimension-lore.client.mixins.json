@@ -3,6 +3,10 @@
 	"package": "versoma.dimension.lore.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
+		"LocalPlayerMixin",
+		"MouseHandlerMixin",
+		"GameRendererMixin",
+		"PlayerFovMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
