@@ -1,0 +1,20 @@
+{
+  "controller_gaze": {
+    "category": "hostile",
+    "sounds": [
+      {
+        "name": "versoma-dimension-lore:controller_gaze",
+        "stream": true
+      }
+    ]
+  },
+  "pale_garden_call": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "versoma-dimension-lore:pale_garden_call",
+        "stream": true
+      }
+    ]
+  }
+}
