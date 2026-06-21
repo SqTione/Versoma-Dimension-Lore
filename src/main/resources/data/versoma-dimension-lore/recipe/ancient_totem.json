@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "BSB",
+    "RBR"
+  ],
+  "key": {
+    "B": "versoma-dimension-lore:pale_branch",
+    "S": "minecraft:netherite_scrap",
+    "R": "minecraft:resin_clump"
+  },
+  "result": {
+    "id": "versoma-dimension-lore:ancient_totem",
+    "count": 1
+  }
+}

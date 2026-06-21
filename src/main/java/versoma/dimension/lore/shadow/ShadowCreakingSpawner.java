@@ -2,12 +2,14 @@ package versoma.dimension.lore.shadow;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.creaking.Creaking;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import versoma.dimension.lore.registry.ModEntityRegistry;
 
 import java.util.Random;
 
@@ -48,12 +50,21 @@ public class ShadowCreakingSpawner {
 
         if (y <= level.getMinY()) return;
 
-        Creaking creaking = EntityType.CREAKING.create(level, EntitySpawnReason.COMMAND);
-        if (creaking == null) return;
+        boolean isCallActive = level.getGameRules().get(versoma.dimension.lore.registry.ModGameRulesRegistry.PALE_GARDEN_CALL_ACTIVE);
 
-        creaking.setPos(new Vec3(x, y, z));
+        boolean shouldSpawnController = isCallActive && random.nextFloat() < 0.3f;
 
-        level.addFreshEntity(creaking);
-        ShadowCreakingManager.get().assign(player.getUUID(), creaking.getUUID());
+        EntityType<?> typeToSpawn = shouldSpawnController ? ModEntityRegistry.CONTROLLER_CREAKING : EntityType.CREAKING;
+
+        Entity spawned = typeToSpawn.create(level, EntitySpawnReason.COMMAND);
+        if (spawned == null) return;
+
+        spawned.setPos(new Vec3(x, y, z));
+        level.addFreshEntity(spawned);
+
+        if (!shouldSpawnController && spawned instanceof Creaking creaking) {
+            ((ShadowCreakingEntityMarker) creaking).versoma$setShadowCreaking(true);
+            ShadowCreakingManager.get().assign(player.getUUID(), creaking.getUUID());
+        }
     }
 }

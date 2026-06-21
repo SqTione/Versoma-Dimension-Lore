@@ -5,7 +5,8 @@
 	"mixins": [
 		"NetherPortalMixin",
 		"RecipeManagerMixin",
-		"CreakingMixin"
+		"CreakingMixin",
+		"LivingEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

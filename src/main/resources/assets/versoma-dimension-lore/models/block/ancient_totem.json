@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "versoma-dimension-lore:block/ancient_totem_top",
+    "side": "versoma-dimension-lore:block/ancient_totem_side"
+  }
+}

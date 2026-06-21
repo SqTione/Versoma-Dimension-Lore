@@ -3,13 +3,16 @@ package versoma.dimension.lore.controller;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -17,13 +20,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import versoma.dimension.lore.registry.ModSoundsRegistry;
 
 import java.util.EnumSet;
@@ -171,6 +177,7 @@ public class ControllerCreakingEntity extends Monster {
             }
             case 3 -> {
                 if (phaseTimer >= RELEASE_DURATION) {
+                    this.dropPaleBranch();
                     this.discard();
                 }
             }
@@ -178,10 +185,10 @@ public class ControllerCreakingEntity extends Monster {
     }
 
     private void despawnWithParticles() {
-        if (this.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            net.minecraft.world.phys.Vec3 pos = this.position();
+        if (this.level() instanceof ServerLevel serverLevel) {
+            Vec3 pos = this.position();
             serverLevel.sendParticles(
-                    net.minecraft.core.particles.ParticleTypes.POOF,
+                    ParticleTypes.POOF,
                     pos.x, pos.y + 1.0, pos.z,
                     12, 0.3, 0.5, 0.3, 0.05
             );
@@ -221,5 +228,18 @@ public class ControllerCreakingEntity extends Monster {
                 this.mob.getNavigation().moveTo(target, APPROACH_SPEED_MULTIPLIER);
             }
         }
+    }
+
+    private void dropPaleBranch() {
+        if (this.level() instanceof ServerLevel serverLevel) {
+            ItemStack stack = new ItemStack(versoma.dimension.lore.registry.ModItemsRegistry.PALE_BRANCH);
+            ItemEntity itemEntity = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), stack);
+            serverLevel.addFreshEntity(itemEntity);
+        }
+    }
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource damageSource, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, damageSource, recentlyHit);
+        this.dropPaleBranch();
     }
 }
