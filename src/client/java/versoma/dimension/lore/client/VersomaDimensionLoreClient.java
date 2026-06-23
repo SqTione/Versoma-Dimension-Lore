@@ -8,7 +8,7 @@ import versoma.dimension.lore.registry.ModEntityRegistry;
 public class VersomaDimensionLoreClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		// Entities
 		EntityRenderers.register(ModEntityRegistry.CONTROLLER_CREAKING, ControllerCreakingRenderer::new);
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 	}
 }
