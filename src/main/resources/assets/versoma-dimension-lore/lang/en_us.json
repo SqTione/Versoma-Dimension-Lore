@@ -6,5 +6,7 @@
 
   "entity.versoma-dimension-lore.controller_creaking": "Controller Creaking",
 
-  "gamerule.pale_garden_call_active": "Pale Garden call is active"
+  "gamerule.pale_garden_call_active": "Pale Garden call is active",
+
+  "effect.versoma-dimension-lore.rot": "Rotting"
 }

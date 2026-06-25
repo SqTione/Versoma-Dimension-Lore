@@ -6,5 +6,7 @@
 
   "entity.versoma-dimension-lore.controller_creaking": "Контролирующий скрипун",
 
-  "gamerule.pale_garden_call_active": "Зов Бледного Сада активен"
+  "gamerule.pale_garden_call_active": "Зов Бледного Сада активен",
+
+  "effect.versoma-dimension-lore.rot": "Гниение"
 }

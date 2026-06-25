@@ -13,11 +13,7 @@ import org.slf4j.LoggerFactory;
 import versoma.dimension.lore.boundary.BoundaryEffectHandler;
 import versoma.dimension.lore.command.PaleGardenCommand;
 import versoma.dimension.lore.maintenance.MaintenanceManager;
-import versoma.dimension.lore.registry.ModBlocksRegistry;
-import versoma.dimension.lore.registry.ModItemsRegistry;
-import versoma.dimension.lore.registry.ModEntityRegistry;
-import versoma.dimension.lore.registry.ModGameRulesRegistry;
-import versoma.dimension.lore.registry.ModSoundsRegistry;
+import versoma.dimension.lore.registry.*;
 import versoma.dimension.lore.shadow.ShadowCreakingSpawner;
 import versoma.dimension.lore.shadow.ShadowCreakingTracker;
 import versoma.dimension.lore.sleep.SleepParalysisHandler;
@@ -34,6 +30,7 @@ public class VersomaDimensionLore implements ModInitializer {
 		ModGameRulesRegistry.register();
 		ModSoundsRegistry.register();
 		ModEntityRegistry.register();
+		ModEffectsRegistry.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			PaleGardenCommand.register(dispatcher);
