@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "hud/heart",
+      "prefix": "hud/heart/"
+    }
+  ]
+}
