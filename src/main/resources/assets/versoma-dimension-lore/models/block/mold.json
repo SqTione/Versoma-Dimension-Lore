@@ -1,0 +1,27 @@
+{
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "versoma-dimension-lore:block/mold_base",
+    "base": "versoma-dimension-lore:block/mold_base",
+    "overlay": "versoma-dimension-lore:block/mold_overlay"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0.1 ],
+      "to": [ 16, 16, 0.1 ],
+      "faces": {
+        "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#base" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#base" }
+      }
+    },
+    {
+      "from": [ 0, 0, 0.11 ],
+      "to": [ 16, 16, 0.11 ],
+      "faces": {
+        "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#overlay" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay" }
+      }
+    }
+  ]
+}

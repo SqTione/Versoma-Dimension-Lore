@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "versoma-dimension-lore:item/ancient_totem"
+      "model": "versoma-dimension-lore:item/ancient_totem"
   }
 }

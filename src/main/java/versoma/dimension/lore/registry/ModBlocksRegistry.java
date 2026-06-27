@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import versoma.dimension.lore.VersomaDimensionLore;
+import versoma.dimension.lore.mold.MoldBlock;
 
 import java.util.function.Function;
 
@@ -50,6 +51,16 @@ public class ModBlocksRegistry {
             "ancient_totem",
             Block::new,
             BlockBehaviour.Properties.of().sound(SoundType.WOOD),
+            true
+    );
+
+    public static final Block MOLD = register(
+            "mold",
+            MoldBlock::new,
+            BlockBehaviour.Properties.of()
+                    .sound(SoundType.SCULK_VEIN)
+                    .noCollision()
+                    .replaceable(),
             true
     );
 }

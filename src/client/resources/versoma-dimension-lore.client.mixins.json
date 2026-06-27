@@ -6,7 +6,8 @@
 		"LocalPlayerMixin",
 		"MouseHandlerMixin",
 		"GameRendererMixin",
-		"PlayerFovMixin"
+		"PlayerFovMixin",
+		"GuiMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
