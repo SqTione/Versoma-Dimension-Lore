@@ -8,11 +8,14 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import versoma.dimension.lore.boundary.BoundaryEffectHandler;
+import versoma.dimension.lore.command.MoldInfectionCommand;
 import versoma.dimension.lore.command.PaleGardenCommand;
 import versoma.dimension.lore.maintenance.MaintenanceManager;
+import versoma.dimension.lore.mold.MoldInfectionManager;
 import versoma.dimension.lore.registry.*;
 import versoma.dimension.lore.shadow.ShadowCreakingSpawner;
 import versoma.dimension.lore.shadow.ShadowCreakingTracker;
@@ -34,6 +37,7 @@ public class VersomaDimensionLore implements ModInitializer {
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			PaleGardenCommand.register(dispatcher);
+			MoldInfectionCommand.register(dispatcher);
 		});
 
 		ModItemsRegistry.initialize();
@@ -46,6 +50,13 @@ public class VersomaDimensionLore implements ModInitializer {
 			ShadowCreakingTracker.tick(server);
 			SleepParalysisHandler.tick(server);
 			MaintenanceManager.tick(server);
+		});
+
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			ServerLevel level = server.getLevel(Level.OVERWORLD);
+			if (level != null) {
+				MoldInfectionManager.get(level).tick(level);
+			}
 		});
 
 		EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) -> {
