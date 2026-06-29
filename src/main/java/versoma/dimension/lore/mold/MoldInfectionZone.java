@@ -14,8 +14,7 @@ import java.util.List;
 
 public class MoldInfectionZone {
 
-//    public static final int INFECTION_TICK_INTERVAL = 24000;
-    public static final int INFECTION_TICK_INTERVAL = 40;
+    public static final int INFECTION_TICK_INTERVAL = 10000;
     private static final float DEAD_NODE_CLEANUP_CHANCE = 0.1f;
 
     private final BoundingBox bounds;

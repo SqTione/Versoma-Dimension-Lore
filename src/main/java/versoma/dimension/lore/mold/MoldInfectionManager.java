@@ -50,7 +50,7 @@ public class MoldInfectionManager extends SavedData {
     public void addZone(MoldInfectionZone zone) {
         if (zone == null) throw new IllegalArgumentException("Zone cannot be null");
         this.activeZones.add(zone);
-        this.setDirty(); //
+        this.setDirty();
     }
 
     public void removeZonesAt(BlockPos pos) {
