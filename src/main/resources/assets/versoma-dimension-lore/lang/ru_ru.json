@@ -8,5 +8,10 @@
 
   "gamerule.pale_garden_call_active": "Зов Бледного Сада активен",
 
-  "effect.versoma-dimension-lore.rot": "Гниение"
+  "effect.versoma-dimension-lore.rot": "Гниение",
+
+  "item.minecraft.potion.effect.rot": "Зелье гниения",
+  "item.minecraft.splash_potion.effect.rot": "Взрывное зелье гниения",
+  "item.minecraft.lingering_potion.effect.rot": "Оседающее зелье гниения",
+  "item.minecraft.tipped_arrow.effect.rot": "Стрела гниения"
 }

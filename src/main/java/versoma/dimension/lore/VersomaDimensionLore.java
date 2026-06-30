@@ -34,6 +34,7 @@ public class VersomaDimensionLore implements ModInitializer {
 		ModSoundsRegistry.register();
 		ModEntityRegistry.register();
 		ModEffectsRegistry.register();
+		ModPotionsRegistry.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			PaleGardenCommand.register(dispatcher);
