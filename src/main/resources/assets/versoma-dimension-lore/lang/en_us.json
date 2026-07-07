@@ -8,5 +8,10 @@
 
   "gamerule.pale_garden_call_active": "Pale Garden call is active",
 
-  "effect.versoma-dimension-lore.rot": "Rotting"
+  "effect.versoma-dimension-lore.rot": "Rotting",
+
+  "item.minecraft.potion.effect.rot": "Potion of Rot",
+  "item.minecraft.splash_potion.effect.rot": "Splash Potion of Rot",
+  "item.minecraft.lingering_potion.effect.rot": "Lingering Potion of Rot",
+  "item.minecraft.tipped_arrow.effect.rot": "Arrow of Rot"
 }
