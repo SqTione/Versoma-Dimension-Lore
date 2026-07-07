@@ -6,6 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffect;
 import versoma.dimension.lore.VersomaDimensionLore;
+import versoma.dimension.lore.effects.AnxietyEffect;
 import versoma.dimension.lore.effects.RotEffect;
 
 public class ModEffectsRegistry {
@@ -13,6 +14,12 @@ public class ModEffectsRegistry {
             BuiltInRegistries.MOB_EFFECT,
             Identifier.fromNamespaceAndPath(VersomaDimensionLore.MOD_ID, "rot"),
             new RotEffect()
+    );
+
+    public static final Holder<MobEffect> ANXIETY = Registry.registerForHolder(
+            BuiltInRegistries.MOB_EFFECT,
+            Identifier.fromNamespaceAndPath(VersomaDimensionLore.MOD_ID, "anxiety"),
+            new AnxietyEffect()
     );
 
     public static void initialize() {

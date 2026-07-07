@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import versoma.dimension.lore.VersomaDimensionLore;
@@ -141,5 +142,17 @@ public class LivingEntityMixin implements ShadowCreakingEntityMarker {
 
             victim.addEffect(new MobEffectInstance(ModEffectsRegistry.ROT, transferDuration, 0, false, true, true));
         }
+    }
+
+    @ModifyVariable(method = "heal", at = @At("HEAD"), argsOnly = true)
+    private float versoma$modifyHealAmountAnxiety(float amount) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+
+        if (entity.level().isClientSide()) return amount;
+
+        if (entity.hasEffect(ModEffectsRegistry.ANXIETY)) {
+            return amount * 0.25f;
+        }
+        return amount;
     }
 }

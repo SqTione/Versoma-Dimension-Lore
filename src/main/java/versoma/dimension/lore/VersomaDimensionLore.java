@@ -8,6 +8,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +65,12 @@ public class VersomaDimensionLore implements ModInitializer {
 		EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) -> {
 			if (player instanceof ServerPlayer sp) {
 				ServerLevel level = (ServerLevel) sp.level();
+
+				if (sp.hasEffect(ModEffectsRegistry.ANXIETY)) {
+					sp.sendSystemMessage(Component.literal("Чувство тревоги не дает вам уснуть..."), true);
+					return Player.BedSleepingProblem.OTHER_PROBLEM;
+				}
+
 				return SleepParalysisHandler.checkCanSleep(sp, level);
 			}
 			return null;
