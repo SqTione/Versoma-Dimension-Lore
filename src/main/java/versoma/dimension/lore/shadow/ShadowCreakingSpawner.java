@@ -64,6 +64,7 @@ public class ShadowCreakingSpawner {
 
         if (!shouldSpawnController && spawned instanceof Creaking creaking) {
             ((ShadowCreakingEntityMarker) creaking).versoma$setShadowCreaking(true);
+            creaking.addTag(ShadowCreakingManager.SHADOW_TAG);
             ShadowCreakingManager.get().assign(player.getUUID(), creaking.getUUID());
         }
     }

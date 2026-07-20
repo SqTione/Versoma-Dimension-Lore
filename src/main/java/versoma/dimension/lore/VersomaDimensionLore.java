@@ -52,7 +52,6 @@ public class VersomaDimensionLore implements ModInitializer {
 			ShadowCreakingSpawner.tick(server);
 			ShadowCreakingTracker.tick(server);
 			SleepParalysisHandler.tick(server);
-			MaintenanceManager.tick(server);
 		});
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -93,13 +92,6 @@ public class VersomaDimensionLore implements ModInitializer {
 					SleepParalysisHandler.onWakeUp(sp, level, state);
 				}
 			}
-		});
-
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			server.getPlayerList().getPlayers().forEach(BoundaryEffectHandler::tick);
-			ShadowCreakingSpawner.tick(server);
-			ShadowCreakingTracker.tick(server);
-			SleepParalysisHandler.tick(server);
 		});
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

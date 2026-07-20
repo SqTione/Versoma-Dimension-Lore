@@ -3,13 +3,13 @@
 	"id": "versoma-dimension-lore",
 	"version": "${version}",
 	"name": "Versoma Dimension Lore",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Versoma Dimension Lore is a storytelling mod for a Minecraft server.",
 	"authors": [
-		"Me!"
+		"SqTione"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/SqTione/Versoma-Dimension-Lore"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/versoma-dimension-lore/icon.png",
